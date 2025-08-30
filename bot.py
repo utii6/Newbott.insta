@@ -102,7 +102,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # أزرار الخدمات
     keyboard = [[InlineKeyboardButton(f"{name}", callback_data=f"service_{sid}")]
-                for sid, name in SERVICES.items()]
+            for sid, name in SERVICES.items()]
     reply_markup = InlineKeyboardMarkup(keyboard)
     await update.message.reply_text(
         f"أهلاً {user.full_name} 👋\nاختر الخدمة التي تريدها :",
@@ -160,9 +160,9 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return
 
     # التعامل مع الخدمات
-    if query.data.startswith("service_"):
-        service_id = int(query.data.split("_")[1])
-        context.user_data["selected_service"] = service_id
+ if query.data in SERVICES:
+    service_key = query.data
+    context.user_data["selected_service"] = service_key
         await query.message.reply_text("✍️😂 أرسل رابط المنشور:")
         context.user_data["manual_step"] = 1
 
