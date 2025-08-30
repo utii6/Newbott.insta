@@ -1,5 +1,5 @@
 import json
-from telegram import ContextTypes
+from telegram.ext import ContextTypes  # تصحيح الاستيراد
 
 # -------------------------
 # نقاط المستخدمين
