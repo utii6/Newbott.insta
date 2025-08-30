@@ -135,8 +135,8 @@ async def input_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     subscribed = await check_subscription(user_id, context)
     if not subscribed:
         await update.message.reply_text(
-            f"⚠️ اشترك بالقناه حبيبي {CHANNEL_ID} 
-        )
+    f"⚠️ اشترك بالقناة حبيبي {CHANNEL_ID} لاستخدام البوت"
+)
         return
 
     if "manual_step" in context.user_data:
