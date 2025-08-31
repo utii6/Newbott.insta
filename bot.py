@@ -26,7 +26,7 @@ application = Application.builder().token(BOT_TOKEN).build()
 # /start command
 # -------------------------
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user = update.effective_user
+    await update.message.reply_text("تم الاتصال بالبوت بنجاح ✅")
     user_id = user.id
 
     # تحقق الاشتراك الاجباري
