@@ -170,12 +170,19 @@ application.add_handler(CommandHandler("start", start))
 application.add_handler(CallbackQueryHandler(button_handler))
 application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, input_handler))
 
+
+# -------------------------
+# FastAPI Events
+# -------------------------
 @fastapi_app.on_event("startup")
 async def startup():
     await application.bot.set_webhook(WEBHOOK_URL)
     await application.initialize()
-    await application.start()
 
+
+# -------------------------
+# Webhook Endpoint
+# -------------------------
 @fastapi_app.post(WEBHOOK_PATH)
 async def webhook(request: Request):
     data = await request.json()
