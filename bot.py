@@ -26,8 +26,17 @@ application = Application.builder().token(BOT_TOKEN).build()
 # /start command
 # -------------------------
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("تم الاتصال بالبوت بنجاح ✅")
-    user_id = user.id
+    user_id = update.effective_user.id
+    
+    # التحقق من الاشتراك
+    subscribed = await check_subscription(user_id, context)
+    
+    if not subscribed:
+        await update.message.reply_text("🚫 لازم تشترك بالقناة حتى تقدر تستخدم البوت.")
+        return
+
+    # إذا مشترك ✅
+    await admin_panel_buttons(update, context)
 
     # تحقق الاشتراك الاجباري
     subscribed = await check_subscription(user_id, context, CHANNEL_ID)
