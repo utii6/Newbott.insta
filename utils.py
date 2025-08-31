@@ -1,39 +1,44 @@
 import json
-from telegram.ext import ContextTypes  # تصحيح الاستيراد
+import os
 
 # -------------------------
-# نقاط المستخدمين
+# تحميل/حفظ بيانات المستخدمين والنقاط
 # -------------------------
-try:
-    with open("points.json", "r") as f:
+USERS_FILE = "users.json"
+POINTS_FILE = "points.json"
+
+if os.path.exists(USERS_FILE):
+    with open(USERS_FILE, "r") as f:
+        users = json.load(f)
+else:
+    users = {}
+
+if os.path.exists(POINTS_FILE):
+    with open(POINTS_FILE, "r") as f:
         points = json.load(f)
-except:
+else:
     points = {}
 
-def save_points():
-    with open("points.json", "w") as f:
-        json.dump(points, f, indent=4)
-
-# -------------------------
-# المستخدمين
-# -------------------------
-try:
-    with open("users.json", "r") as f:
-        users = json.load(f)
-except:
-    users = []
 
 def save_users():
-    with open("users.json", "w") as f:
-        json.dump(users, f, indent=4)
+    with open(USERS_FILE, "w") as f:
+        json.dump(users, f)
+
+
+def save_points():
+    with open(POINTS_FILE, "w") as f:
+        json.dump(points, f)
+
 
 # -------------------------
-# التحقق من الاشتراك في القناة
+# فحص الاشتراك الإجباري
 # -------------------------
-async def check_subscription(user_id, context: ContextTypes.DEFAULT_TYPE):
-    CHANNEL_ID = "@qd3qd"  # ضع هنا معرف قناتك
+async def check_subscription(user_id, context, channel_id):
+    """
+    يتحقق إذا كان المستخدم مشترك في القناة الإلزامية
+    """
     try:
-        member = await context.bot.get_chat_member(CHANNEL_ID, user_id)
+        member = await context.bot.get_chat_member(channel_id, user_id)
         return member.status in ["member", "administrator", "creator"]
-    except:
+    except Exception:
         return False
